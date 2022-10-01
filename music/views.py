@@ -1,6 +1,6 @@
 from django.http import Http404
-from .models import Music
-from .serializers import MusicSerializer
+from .models import Song
+from .serializers import SongSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import APIView
@@ -10,12 +10,12 @@ from music import serializers
 class MusicList(APIView):
 
     def get(self, request):
-        songs = Music.objects.all()
-        serializer = MusicSerializer(songs, many=True)
+        songs = Song.objects.all()
+        serializer = SongSerializer(songs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = MusicSerializer(data=request.data)
+        serializer = SongSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -26,13 +26,13 @@ class MusicDetail(APIView):
 
     def get_object(self,pk):
         try:
-            return Music.objects.get(pk=pk)
-        except Music.DoesNotExist:
+            return Song.objects.get(pk=pk)
+        except Song.DoesNotExist:
             raise Http404
 
     def get(self, request, pk):
         song = self.get_object(pk)
-        serializer = MusicSerializer(song)
+        serializer = SongSerializer(song)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
@@ -45,7 +45,7 @@ class MusicDetail(APIView):
 
     def put(self, request, pk):
         song = self.get_object(pk)
-        serializer = MusicSerializer(song, data=request.data)
+        serializer = SongSerializer(song, data=request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

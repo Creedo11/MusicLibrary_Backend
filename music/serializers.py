@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Music
+from .models import Song
 
-class MusicSerializer(serializers.ModelSerializer):
+class SongSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Music
+        model = Song
         fields = ['id', 'title', 'artist', 'album', 'genre', 'release_date', 'likes']
